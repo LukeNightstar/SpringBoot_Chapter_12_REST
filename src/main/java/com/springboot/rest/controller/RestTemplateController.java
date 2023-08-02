@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestTemplateController {
 
     private final RestTemplateService restTemplateService;
-
-    public RestTemplateController(RestTemplateService restTemplateService) {
+    public RestTemplateController(RestTemplateService restTemplateService){
         this.restTemplateService = restTemplateService;
     }
 
@@ -34,5 +33,6 @@ public class RestTemplateController {
     public ResponseEntity<MemberDto> postWithHeader(){
         return restTemplateService.postWithHeader();
     }
+
 
 }

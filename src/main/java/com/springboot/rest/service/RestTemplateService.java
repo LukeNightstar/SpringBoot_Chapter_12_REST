@@ -2,9 +2,9 @@ package com.springboot.rest.service;
 
 import com.springboot.rest.data.dto.MemberDto;
 import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -108,26 +108,29 @@ public class RestTemplateService {
     }
 
     // HttpClient API
-    public RestTemplate restTemplate(){
+    // https://kindloveit.tistory.com/113
+    @Bean
+    HttpClient httpClient() {
+        return HttpClientBuilder.create()
+                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
+                        .setMaxConnPerRoute(100)
+                        .setMaxConnTotal(300)
+                        .build())
+                .build();
+    }
+
+    @Bean
+    HttpComponentsClientHttpRequestFactory factory(HttpClient httpClient) {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-
-        HttpClient client = HttpClientBuilder.create()
-                .setMaxConnTotal(500)
-                .setMaxConnPerRoute(500)
-                .build();
-
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setMaxConnTotal(500)
-                .setMaxConnPerRoute(500)
-                .build();
-
         factory.setHttpClient(httpClient);
-        factory.setConnectTimeout(2000);
-        factory.setReadTimeout(5000);
+        factory.setConnectTimeout(3000);
 
-        RestTemplate restTemplate = new RestTemplate(factory);
+        return factory;
+    }
 
-        return restTemplate;
+    @Bean
+    RestTemplate restTemplate(HttpComponentsClientHttpRequestFactory factory) {
+        return new RestTemplate(factory);
     }
 
 }

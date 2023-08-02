@@ -1,14 +1,6 @@
 package com.springboot.rest.service;
 
 import com.springboot.rest.data.dto.MemberDto;
-import org.apache.hc.client5.http.config.ConnectionConfig;
-import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.core5.http.io.SocketConfig;
-import org.apache.hc.core5.ssl.SSLContexts;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -17,12 +9,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
 
-import static org.apache.hc.client5.http.impl.classic.HttpClients.custom;
-
+@Deprecated
 @Service
-public class RestTemplateServiceTest {
+public final class RestTemplateService_Deprecated {
 
     // GET 형식 RestTemplate
     // This method passes values without using PathVariable or parameters.
@@ -115,42 +105,26 @@ public class RestTemplateServiceTest {
     }
 
     // HttpClient API
-    @Bean
-    public RestTemplate restTemplate() {
+    @Deprecated
+    public RestTemplate restTemplate(){
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager();
 
-        ConnectionConfig connConfig = ConnectionConfig.custom()
-                .setSocketTimeout()
+        /*HttpClient client = HttpClientBuilder.create()
+                .setMaxConnTotal(500)
+                .setMaxConnPerRoute(500)
                 .build();
 
-
-        CloseableHttpClient httpClient = custom()
-                .setSSLSocketFactory(new SSLConnectionSocketFactory(
-                        SSLContexts.createSystemDefault(),
-                        new String[] { "TLSv1.2" },
-                        null,
-                        SSLConnectionSocketFactory.getDefaultHostnameVerifier()))
-                .setConnectionTimeToLive(1, TimeUnit.MINUTES)
-                .setDefaultSocketConfig(SocketConfig.custom()
-                        .setSoTimeout(60000)
-                        .build())
-                .setDefaultRequestConfig(RequestConfig.custom()
-                        .setConnectTimeout(60000)
-                        .setSocketTimeout(60000)
-                        .setCookieSpec(CookieSpecs.STANDARD_STRICT)
-                        .build())
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setMaxConnTotal(500)
+                .setMaxConnPerRoute(500)
                 .build();
 
         factory.setHttpClient(httpClient);
         factory.setConnectTimeout(2000);
-        factory.setReadTimeout(5000);
-
-        manager.setSocketTimeout(5000);
-
-
+        factory.setReadTimeout(5000);*/
 
         RestTemplate restTemplate = new RestTemplate(factory);
+
         return restTemplate;
     }
 
