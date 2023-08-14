@@ -13,9 +13,12 @@ import java.util.Objects;
 
 @Service
 public class WebClientService {
+
+    public final String URI_LINK = "http://localhost:8080";
+
     public String getName(){
         WebClient webClient = WebClient.builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(URI_LINK)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -27,7 +30,7 @@ public class WebClientService {
     }
 
     public String getNameWithPathVariable() {
-        WebClient webClient = WebClient.create("http://localhost:8080");
+        WebClient webClient = WebClient.create(URI_LINK);
 
         ResponseEntity<String> responseEntity = webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/api/v1/crud-api/{name}")
@@ -38,7 +41,7 @@ public class WebClientService {
     }
 
     public String getNameWithParameter() {
-        WebClient webClient = WebClient.create("http://localhost:8080");
+        WebClient webClient = WebClient.create(URI_LINK);
 
         return webClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/crud-api")
                         .queryParam("name", "Flature")
@@ -55,7 +58,7 @@ public class WebClientService {
 
     public ResponseEntity<MemberDto> postWithParamAndBody() {
         WebClient webClient = WebClient.builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(URI_LINK)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -77,7 +80,7 @@ public class WebClientService {
 
     public ResponseEntity<MemberDto> postWithHeader() {
         WebClient webClient = WebClient.builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(URI_LINK)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 

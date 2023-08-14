@@ -17,25 +17,27 @@ import java.net.URI;
 @Service
 public class RestTemplateService {
 
+    public final String URI_LINK = "http://localhost:8080";
+
     // GET 형식 RestTemplate
     // This method passes values without using PathVariable or parameters.
     public String getName() {
         URI uri = UriComponentsBuilder
-                .fromUriString("http://localhost:8080")
+                .fromUriString(URI_LINK)
                 .path("/api/v1/crud-api")
                 .encode() // Prevention of broken display language
-                .build()  // 빌더생성 종료
+                .build()  // 빌더 생성 종료
                 .toUri(); // URI 타입으로(URI 객체가 아니면 toUriString()로 대체)
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
-
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class); // 외부 API 요청
+        
         return responseEntity.getBody();
     }
 
     public String getNameWithPathVariable() {
         URI uri = UriComponentsBuilder
-                .fromUriString("http://localhost:8080")
+                .fromUriString(URI_LINK)
                 .path("/api/v1/crud-api/{name}")
                 .encode()
                 .build()
@@ -51,7 +53,7 @@ public class RestTemplateService {
     // This method passes values as parameters.
     public String getNameWithParameter() {
         URI uri = UriComponentsBuilder
-                .fromUriString("http://localhost:8080")
+                .fromUriString(URI_LINK)
                 .path("/api/v1/crud-api/param")
                 .queryParam("name", "Flature")
                 .encode()
@@ -67,7 +69,7 @@ public class RestTemplateService {
     // Post 형식 RestTemplate
     public ResponseEntity<MemberDto> postWithParamAndBody() {
         URI uri = UriComponentsBuilder
-                .fromUriString("http://localhost:8080")
+                .fromUriString(URI_LINK)
                 .path("/api/v1/crud-api")
                 .queryParam("name", "Flature")
                 .queryParam("email", "flature@wikibooks.co.kr")
@@ -87,7 +89,7 @@ public class RestTemplateService {
 
     public ResponseEntity<MemberDto> postWithHeader() {
         URI uri = UriComponentsBuilder
-                .fromUriString("http://localhost:8080")
+                .fromUriString(URI_LINK)
                 .path("/api/v1/crud-api/add-header")
                 .encode()
                 .build()

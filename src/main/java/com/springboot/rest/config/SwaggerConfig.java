@@ -15,12 +15,10 @@ public class SwaggerConfig {
     OpenAPI openAPI() {
         return new OpenAPI()
                 .components(new Components())
-                .info(getApiInfo());
+                .info(new Info()
+                        .version("v1.0.0")
+                        .title("RestTemplate TEST API DOCS")
+                        .description("RestTemplate API 테스트 명세서")
+                );
     }
-
-    private static Info getApiInfo() {
-        return new Info().title("RestTemplate TEST API DOCS").version("v1")
-                .description("RestTemplate API 테스트 명세서");
-    }
-
 }
